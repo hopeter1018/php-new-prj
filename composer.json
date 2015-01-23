@@ -12,6 +12,6 @@
         }
 	],
     "require": {
-        "hopeter1018/php-socket-cache": "dev-master"
+        "hopeter1018/socket-cache": "dev-master"
     }
 }
