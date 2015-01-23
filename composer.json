@@ -1,7 +1,7 @@
 {
     "name": "hopeter1018/php-new-prj",
     "description": "My PHP project default",
-    "keywords": [""],
+    "keywords": [],
     "version": "1.0.0",
     "license": "MIT",
     "authors": [
@@ -10,7 +10,7 @@
             "email": "hokwaichi@gmail.com",
             "role": "Developer"
         }
-	],
+    ],
     "require": {
         "hopeter1018/socket-cache": "dev-master"
     }
