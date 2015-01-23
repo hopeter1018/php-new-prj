@@ -1,0 +1,7 @@
+{
+    "name": "hopeter1018/php-new-prj",
+    "version": "1.0.0",
+    "require": {
+        "hopeter1018/php-socket-cache": "dev-master"
+    }
+}
