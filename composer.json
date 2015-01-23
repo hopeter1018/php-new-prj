@@ -1,6 +1,16 @@
 {
     "name": "hopeter1018/php-new-prj",
+    "description": "My PHP project default",
+    "keywords": [""],
     "version": "1.0.0",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Peter Ho",
+            "email": "hokwaichi@gmail.com",
+            "role": "Developer"
+        }
+	],
     "require": {
         "hopeter1018/php-socket-cache": "dev-master"
     }
