@@ -1,0 +1,67 @@
+{#
+
+####################################################################################################
+#   Use with form elements array
+
+{% embed "zmsForm.twig" with {crud: "", enableDate: true, buttonWorkflow: true, button: false, formElements: {}/* Optional */} %}
+    {% block button %}{% endblock %}
+{% endembed %}
+
+####################################################################################################
+
+####################################################################################################
+#   Use with blocks
+
+{% embed "zmsForm.twig" with {crud: "", enableDate: true, buttonWorkflow: true, button: false} %}
+    {% block formArea %}{% endblock %}
+    {% block messageArea %}{% endblock %}
+    {% block buttonArea %}{% endblock %}
+{% endembed %}
+
+####################################################################################################
+
+#}
+
+<div class="col-md-12">
+    <br />
+    <div class="recordForm"
+         zms-form
+         restful-crud="{{ crud ?: 'record' }}"
+         >
+        <form class="form-horizontal" name="form" role="form">
+            {% block formArea %}{% endblock %}
+            {% if formElements is iterable %}
+                {% for formEle in formElements %}
+                    {% include 'form/element.twig' with formEle %}
+                {% endfor %}
+            {% endif %}
+            {% block formAreaBelow %}{% endblock %}
+            {% if enableDate %}
+                {% include 'form/enable-date.twig' %}
+            {% endif %}
+            <div class="{{ bs.fg }}">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="zmsHidden">{[{ form.$error }]}</div>
+                    <div class="alert alert-info" ng-show="formDataLoaded && (form.$invalid || serverMessage != '')">
+                        <p ng-show="serverMessage != ''"><span ng-bind-html="serverMessage"></span></p>
+                        {% block messageArea %}
+                        {% endblock %}
+                        {% if formElements is iterable %}
+                            {% for formEle in formElements %}
+                                {% include 'form/element-error.twig' with formEle %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    {% if buttonWorkflow %}
+                        {% include 'form/workflow-buttons.twig' %}
+                    {% elseif button %}
+                        {% include 'form/save-buttons.twig' %}
+                    {% else %}
+                        {% block buttonArea %}
+                        {% endblock %}
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+    </div><!--/ ! recordForm -->
+</div>

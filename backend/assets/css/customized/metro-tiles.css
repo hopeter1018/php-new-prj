@@ -1,0 +1,19 @@
+/* Metro style tiles for bootstrap (Windows 8)
+-------------------------------------------------- */
+div.tiles{margin-bottom: 20px;}
+div.tiles div.tile .btn{position: absolute; top: 2px; left: 2px; bottom: 2px; right: 2px;}
+div.tiles div.tile:before{ content: ""; display: block; padding-top: 100%; /* initial ratio of 1:1*/
+}
+    div.tiles div.tile{padding: 2px;}
+@media (min-width: 768px){
+    div.tiles div.tile{padding: 2px;}
+    div.tiles div.tile .btn{top: 2px; left: 2px; bottom: 2px; right: 2px;}
+}
+@media (min-width: 992px){
+    div.tiles div.tile{padding: 4px;}
+    div.tiles div.tile .btn{top: 4px; left: 4px; bottom: 4px; right: 4px;}
+}
+@media (min-width: 1200px){
+    div.tiles div.tile{padding: 6px;}
+    div.tiles div.tile .btn{top: 6px; left: 6px; bottom: 6px; right: 6px;}
+}

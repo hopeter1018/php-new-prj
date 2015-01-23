@@ -1,0 +1,24 @@
+{
+    "name": "peter.ho",
+    "version": "1.0.0",
+    "directory": "wcms/assets/js/vendor",
+    "main": "index.html",
+    "dependencies": {
+        "requirejs": null,
+        "requirejs-domready": null,
+        "modernizr": null,
+        "jquery": null,
+        "jquery-ui": null,
+        "angulerjs": null,
+        "angular-cookies": null,
+        "angular-route": null,
+        "angular-resource": null,
+        "angular-sanitize": null,
+        "angular-ui-bootstrap": null,
+        "angular-ui-utils": null,
+        "angular-filter": null,
+        "danialfarid-angular-file-upload": null,
+        "ng-table": null,
+        "ng-phpdebugbar": "latest"
+    }
+}

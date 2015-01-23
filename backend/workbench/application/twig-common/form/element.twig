@@ -1,0 +1,89 @@
+{#
+{
+    "name": "code",
+    "caption": "Travel Agent Code",
+    "attr": {
+        "param": "data.record.travelAgentId"
+    },
+    "repeat": array, "repeat_caption": "fieldName",
+    "validators": {
+        "required": {},
+        "zms-postback|validateUnique": {"message": "Duplicated %caption%"}
+    },
+    "options": charsets, "optionValue": "charsetId" ?: value, "optionCaption": "name" ?: caption,
+    "ngFilter": "ng-filter"
+}
+#}
+{% set dataRecord = dataRecord ?: 'data.record' %}
+
+{% if formEle['type'] == 'group' %}
+    <div class="{{ bs.fg }}">
+        <label for="data.record" class="col-sm-2 control-label">{{ formEle['caption'] }}</label>
+        <div class="col-sm-10">
+            {% for subEle in formEle['sub'] %}
+                {% include 'form/element.twig' with {"formEle": subEle, "dataRecord": dataRecord} only %}
+            {% endfor %}
+        </div>
+    </div>
+{% elseif formEle['type'] == 'h3' %}
+    <h3 class="col-sm-12">{{ formEle['caption'] }}</h3>
+{% elseif formEle['type'] == 'col2' %}
+    <div class="{{ bs.fg }}">
+        {% for subFormEle in formEle['sub'] %}
+        <label for="data.record" class="col-sm-2 control-label">{{ (subFormEle['caption'] ?: subFormEle['name']) | humanize }}</label>
+        <div class="col-sm-4">
+            {% set eleVals = subFormEle['validators'] | keys %}
+            {% set vals = [] %}
+            {% for val in eleVals %}
+                {% set temp = val | split('|') %}
+                {% if temp|length == 1 %}{% set vals = vals | merge([ temp[0] ]) %}
+                {% else %}{% set vals = vals | merge([ temp | join('="') ~ '"' ]) %}
+                {% endif %}
+            {% endfor %}
+            {% set validatorAttr = vals | join(' ') %}
+            {% for key, val in subFormEle['attr'] %}
+                {%   set attrStr = attrStr ~ ' ' ~ key ~ '="' ~ val ~ '"' %}
+            {% endfor %}
+
+            {% set ngModel = '' ~ dataRecord ~ '.' ~ subFormEle['name'] ~ '' %}
+            {% set attrStr = ' name="' ~ dataRecord ~ '.' ~ subFormEle['name'] ~ '" ng-model="' ~ ngModel ~ '" ' ~ validatorAttr ~ '' ~ attrStr %}
+            {% include "form/element-input.twig" with {"formEle": subFormEle, "attrStr": attrStr, "ngModel": ngModel, "dataRecord": dataRecord} only %}
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    {% set caption = formEle['caption'] ?: (formEle['name'] | humanize) %}
+    <div class="{{ bs.fg }}">
+        <label for="data.record.{{ formEle['name'] }}" class="col-sm-2 control-label">{{ caption }}{{ formEle['validators']['required'] is defined ? ' *' : '' }}</label>
+        <div class="col-sm-10">
+            {% set eleVals = formEle['validators'] | keys %}
+            {% set vals = [] %}
+            {% for val in eleVals %}
+                {% set temp = val | split('|') %}
+                {% if temp|length == 1 %}{% set vals = vals | merge([ temp[0] ]) %}
+                {% else %}{% set vals = vals | merge([ temp | join('="') ~ '"' ]) %}
+                {% endif %}
+            {% endfor %}
+            {% set validatorAttr = vals | join(' ') %}
+            {% for key, val in formEle['attr'] %}
+                {%   set attrStr = attrStr ~ ' ' ~ key ~ '="' ~ val ~ '"' %}
+            {% endfor %}
+
+            {% if formEle['repeat'] is not null %}
+                {% for index, each in formEle['repeat'] %}
+                    {% set ngModel = 'data.info[' ~ index ~ '].' ~ formEle['name'] ~ '' %}
+                    {% set attrStr = ' name="data.info[' ~ index ~ '].' ~ formEle['name'] ~ '" ng-model="' ~ ngModel ~ '" ' ~ validatorAttr ~ '' ~ attrStr %}
+                    {% include "form/element-input.twig" %}
+                {% endfor %}
+            {% elseif formEle['type'] == 'date' %}
+                {% set ngModel = '' ~ dataRecord ~ '.' ~ formEle['name'] ~ '.date' %}
+                {% set attrStr = ' name="' ~ dataRecord ~ '.' ~ formEle['name'] ~ '" ng-model="' ~ ngModel ~ '" ' ~ validatorAttr ~ '' ~ attrStr %}
+                {% include "form/element-input.twig" %}
+            {% else %}
+                {% set ngModel = '' ~ dataRecord ~ '.' ~ formEle['name'] ~ '' %}
+                {% set attrStr = ' name="' ~ dataRecord ~ '.' ~ formEle['name'] ~ '" ng-model="' ~ ngModel ~ '" ' ~ validatorAttr ~ '' ~ attrStr %}
+                {% include "form/element-input.twig" %}
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

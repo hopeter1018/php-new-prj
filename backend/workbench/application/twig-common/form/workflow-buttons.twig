@@ -1,0 +1,34 @@
+{% set data = data ? data : 'data' %}
+{% set record = record ? record : 'data.record' %}
+
+<div ng-init="btnClicked = false">
+    <div class="alert alert-info" ng-show="btnClicked">Loading ...</div>
+    <button type="submit"
+        ng-click="btnClicked = true; save();" class="{{ bs.btn.d }}"
+        ng-disabled="
+            btnClicked
+            || form.$invalid
+            || ! ({{ data }}.role === 2
+                || ({{ data }}.role === 1
+                    && (! {{ data }}.edited || ({{ data }}.edited && ! {{ data }}.editedByAdmin))
+                    && ! {{ record }}.requestApproval
+                ))
+        ">Save<span ng-show="! ({{ data }}.role === 2
+                || ({{ data }}.role === 1
+                    && (! {{ data }}.edited || ({{ data }}.edited && ! {{ data }}.editedByAdmin))
+                    && ! {{ record }}.requestApproval
+                ))"> (In Workflow)</span></button>
+    <a href="#list" class="{{ bs.btn.d }}" ng-disabled="btnClicked">Cancel</a>
+    <a class="{{ bs.btn.d }}"
+       ng-show="{{ data }}.edited && {{ data }}.role === 2 && ({{ data }}.editedByAdmin || {{ record }}.requestApproval)"
+       ng-click="btnClicked = true; launch();"
+       ng-disabled="btnClicked">Launch</a>
+    <a class="{{ bs.btn.d }}"
+       ng-show="{{ data }}.edited && {{ data }}.role === 2 && {{ record }}.requestApproval"
+       ng-click="btnClicked = true; reject()"
+       ng-disabled="btnClicked">Reject</a>
+    <a class="{{ bs.btn.d }}"
+       ng-show="{{ data }}.edited && {{ data }}.role === 1 && ! {{ data }}.editedByAdmin && ! {{ record }}.requestApproval"
+       ng-click="btnClicked = true; requestApproval()"
+       ng-disabled="btnClicked">Request Approval</a>
+</div>

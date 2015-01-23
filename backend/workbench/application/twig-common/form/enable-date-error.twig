@@ -1,0 +1,5 @@
+{% set model = model ? model : 'data.record' %}
+
+<p ng-show="form['{{ model }}.enable'].$invalid">Enabled is not valid.</p>
+<p ng-show="form['{{ model }}.effectiveDate.date'].$invalid">Effective Date is not valid.</p>
+<p ng-show="form['{{ model }}.expiryDate.date'].$invalid">Expiry Date is not valid.</p>

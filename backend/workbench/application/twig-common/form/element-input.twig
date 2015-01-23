@@ -1,0 +1,57 @@
+{% if formEle['repeat_caption'] %}
+    <div class="input-group">
+{% endif %}
+
+{% if formEle['type'] == 'textarea' %}
+        <textarea class="form-control" {{ attrStr | raw }}></textarea>
+{% elseif formEle['type'] == 'select' %}
+        <select class="form-control" {{ attrStr | raw }}>
+    {% for opts in formEle['options'] %}
+            <option value="{{ opts[ formEle['optionValue'] ?: "value" ] }}">{{ opts[ formEle['optionCaption'] ?: "caption" ] }}</option>
+    {% endfor %}
+        </select>
+{% elseif formEle['type'] == 'label' %}
+        <p class="form-control-static">{[{ {{ ngModel }}{{ formEle['ngFilter'] ? " | " ~ formEle['ngFilter'] : "" }}  }]}</p>
+{% elseif formEle['type'] == 'value' %}
+        <p class="form-control-static">{[{ {{ formEle['value'] }}{{ formEle['ngFilter'] ? " | " ~ formEle['ngFilter'] : "" }}  }]}</p>
+{% elseif formEle['type'] == 'number' %}
+        <input type="number" class="form-control" {{ attrStr | raw }} />
+{% elseif formEle['type'] == 'email' %}
+        <input type="email" class="form-control" {{ attrStr | raw }} />
+{% elseif formEle['type'] == 'password' %}
+        <input type="password" class="form-control" {{ attrStr | raw }} />
+{% elseif formEle['type'] == 'checkbox' %}
+        <input type="checkbox" {{ attrStr | raw }} />
+{% elseif formEle['type'] == 'date' %}
+{#        <div class="input-group">
+            <input type="text" class="form-control" {{ attrStr | raw }}
+                datepicker-popup="yyyy-MM-dd" is-open="open{{ formEle['name'] | capitalize }}"
+                ng-focus="open{{ formEle['name'] | capitalize }} = true"
+            />
+            <span class="input-group-btn" opened="open{{ formEle['name'] | capitalize }}" zms-input-date></span>
+        </div>#}
+        <div class="dropdown">
+            <a class="dropdown-toggle" id="dropdown{{ formEle['name'] | capitalize }}" role="button"
+               data-toggle="dropdown" data-target="#" href="#"
+            >
+                <div class="input-group">
+                    <input type="text" class="form-control" value="{[{ {{ ngModel }} | obj2date }]}" />
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                </div>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <datetimepicker
+                    {{ attrStr | raw }}
+{#                    ng-model="data.record.offerEndDate.date"#}
+                    data-datetimepicker-config="{ dropdownSelector: '#dropdown{{ formEle['name'] | capitalize }}', minView: 'day' }"
+                />
+            </ul>
+        </div>
+{% else %}
+        <input type="text" class="form-control" {{ attrStr | raw }} />
+{% endif %}
+
+{% if formEle['repeat_caption'] %}
+        <span class="input-group-addon">{{ each[ formEle['repeat_caption'] ] | upper }}</span>
+    </div>
+{% endif %}

@@ -1,0 +1,20 @@
+{% extends "extends/master.twig" %}
+
+{% block requirejs %}./assets/js/my-profile{% endblock requirejs %}
+{% block pagetitle %}My Profile{% endblock pagetitle %}
+
+{% block content %}
+    {% set includes = ['index'] %}
+
+    <ul class="menu">
+    {% for twig in includes %}
+        <li><a href="#/{{ twig }}">{{ twig | humanize }}</a></li>
+    {% endfor %}
+    </ul>
+    {% for twig in includes %}
+    <script type="text/ng-template" id="{{ twig }}">
+        {% include _dir_relative_ ~ twig ~ '.twig' %}
+    </script>
+    {% endfor %}
+{% endblock content %}
+

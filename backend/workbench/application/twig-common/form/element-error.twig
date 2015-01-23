@@ -1,0 +1,38 @@
+
+{% set caption = formEle['caption'] ?: (formEle['name'] | humanize) %}
+
+{% if formEle['type'] == 'number' %}
+    {% if formEle['repeat'] is not null %}
+        {% for index, each in formEle['repeat'] %}
+            <p ng-show="form['data[' ~ index ~ '].record.{{ formEle['name'] }}'].$error.number">{{ caption }} is not a valid number</p>
+        {% endfor %}
+    {% else %}
+        <p ng-show="form['data.record.{{ formEle['name'] }}'].$error.number">{{ caption }} is not a valid number</p>
+    {% endif %}
+{% elseif formEle['type'] == 'email' %}
+    {% if formEle['repeat'] is not null %}
+        {% for index, each in formEle['repeat'] %}
+            <p ng-show="form['data[' ~ index ~ '].record.{{ formEle['name'] }}'].$error.email">{{ caption }} is not a valid email</p>
+        {% endfor %}
+    {% else %}
+        <p ng-show="form['data.record.{{ formEle['name'] }}'].$error.email">{{ caption }} is not a valid email</p>
+    {% endif %}
+{% else %}
+{% endif %}
+
+{% for valKey, validator in formEle['validators'] %}
+    {%  if validator['message'] is not defined %}
+        {%    set message = 'Please input %caption%.' %}
+    {%  else %}
+        {%    set message = validator['message'] %}
+    {%  endif %}
+    {%  set temp = valKey | split('|') %}
+
+    {% if formEle['repeat'] is not null %}
+        {% for index, each in formEle['repeat'] %}
+            <p ng-show="form['data.info[{{index}}].{{ formEle['name'] }}'].$error.{{ temp[0] | camelize }}">{{ message | replace({'%caption%': caption ~ " (" ~ each[ formEle['repeat_caption'] ] | upper ~ ")"}) }}</p>
+        {% endfor %}
+    {% else %}
+        <p ng-show="form['data.record.{{ formEle['name'] }}'].$error.{{ temp[0] | camelize }}">{{ message | replace({'%caption%': caption}) }}</p>
+    {% endif %}
+{% endfor %}
