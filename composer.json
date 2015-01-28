@@ -2,7 +2,7 @@
     "name": "hopeter1018/php-new-prj",
     "description": "My PHP project default",
     "keywords": [],
-    "version": "1.0.1-stable",
+    "version": "1.0.1-dev",
     "minimum-stability": "dev",
     "license": "MIT",
     "authors": [{
@@ -10,7 +10,30 @@
 		"email": "hokwaichi@gmail.com",
 		"role": "Developer"
     }],
+    "config":
+    {
+        "cache-files-ttl": 0,
+        "optimize-autoloader": true,
+        "vendor-dir": "backend/vendor"
+    },
     "require": {
         "hopeter1018/framework": "dev-master"
-    }
+    },
+    "autoload":
+    {
+        "psr-0": {
+            "Repository": "backend/workbench/application/generated/doctrine-files/Repositories",
+            "DoctrineORMModule\\Proxy\\__CG__": "backend/workbench/application/generated/doctrine-files/Proxies"
+        },
+        "classmap": [
+            "backend/vendor/timwhitlock/jparser/PLUG/",
+            "backend/workbench/application/generated/doctrine-files/Entities/"
+        ],
+        "psr-4": {
+            "Zms5\\": ["backend/workbench/"]
+        },
+        "files": [
+            "backend/workbench/application/setup.php"
+        ]
+	}
 }
