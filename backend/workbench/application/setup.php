@@ -31,8 +31,8 @@ define('APP_SYSTEM_STORAGE', APP_WCMS_ROOT . '_system_storage/');
 define('APP_WORKBENCH_STORAGE', APP_WORKBENCH_ROOT . 'application/generated/');
 define('APP_TWIG_CACHE', APP_SYSTEM_STORAGE . 'twig-cache/');
 
-define('APP_CRYPT_KEY', 'afdjvonanew[4v09anv;ora;vsnheaws');
-define('APP_HASH_KEY', 'aknhnhvurenfrngforaoyvaourncaoirntcoajdjawi');
+define('APP_CRYPT_KEY', '');
+define('APP_HASH_KEY', '');
 
 register_shutdown_function(function() {
     $error = error_get_last();

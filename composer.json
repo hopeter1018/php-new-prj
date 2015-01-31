@@ -19,6 +19,12 @@
     "require": {
         "hopeter1018/framework": "dev-master"
     },
+    "scripts":
+    {
+        "post-create-project-cmd": [
+			"Hopeter1018\\Framework\\ComposerScripts\\PostCreateProject::run"
+		]
+	},
     "autoload":
     {
         "psr-0": {
