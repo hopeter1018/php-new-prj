@@ -6,9 +6,9 @@
     "minimum-stability": "dev",
     "license": "MIT",
     "authors": [{
-		"name": "Peter Ho",
-		"email": "hokwaichi@gmail.com",
-		"role": "Developer"
+        "name": "Peter Ho",
+        "email": "hokwaichi@gmail.com",
+        "role": "Developer"
     }],
     "config":
     {
@@ -22,9 +22,9 @@
     "scripts":
     {
         "post-create-project-cmd": [
-			"Hopeter1018\\Framework\\ComposerScripts\\PostCreateProject::run"
-		]
-	},
+            "Hopeter1018\\Framework\\ComposerScripts\\PostCreateProject::run"
+        ]
+    },
     "autoload":
     {
         "psr-0": {
@@ -36,10 +36,10 @@
             "backend/workbench/application/generated/doctrine-files/Entities/"
         ],
         "psr-4": {
-            "Zms5\\": ["backend/workbench/"]
+            "Project\\": ["backend/workbench/"]
         },
         "files": [
             "backend/workbench/application/setup.php"
         ]
-	}
+    }
 }

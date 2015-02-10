@@ -40,4 +40,4 @@ if (PHP_SAPI !== 'cli' and class_exists('Phar') and is_file(APP_ROOT . 'phVendor
 
 list($conn, $config, $entityManager) = \Hopeter1018\DoctrineExtension\Connection::register();
 
-\Hopeter1018\DeveloperTools\CliProcess::start();
+\Hopeter1018\DeveloperTool\CliProcess::start();
