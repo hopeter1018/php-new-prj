@@ -3,4 +3,4 @@
 /backend/assets/wcms
 /backend/vendor
 /composer.lock
-/assets
+/assets/js/vendor
