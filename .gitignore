@@ -4,3 +4,7 @@
 /backend/vendor
 /composer.lock
 /assets/js/vendor
+/assets/js/packages/*
+!/assets/js/packages/index.js
+!/assets/js/packages/sample.js
+!/assets/js/packages/README.md
