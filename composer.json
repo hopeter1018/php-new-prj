@@ -22,7 +22,8 @@
     "scripts":
     {
         "post-create-project-cmd": [
-            "Hopeter1018\\Framework\\ComposerScripts\\PostCreateProject::run"
+            "Hopeter1018\\Framework\\ComposerScripts\\PostCreateProject::run",
+            "bower install"
         ]
     },
     "autoload":

@@ -1,7 +1,7 @@
 {
     "name": "peter.ho",
     "version": "1.0.0",
-    "directory": "wcms/assets/js/vendor",
+    "directory": "assets/js/vendor",
     "main": "index.html",
     "dependencies": {
         "requirejs": null,

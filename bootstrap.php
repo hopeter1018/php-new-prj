@@ -40,4 +40,10 @@ if (PHP_SAPI !== 'cli' and class_exists('Phar') and is_file(APP_ROOT . 'phVendor
 
 list($conn, $config, $entityManager) = \Hopeter1018\DoctrineExtension\Connection::register();
 
-\Hopeter1018\DeveloperTool\CliProcess::start();
+Hopeter1018\DeveloperTool\CliProcess::start();
+
+Hopeter1018\Framework\SessionSegment::register(DB_DB);
+
+Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespaces(array (
+//    UserAccessControl::CLASSNAME => APP_WORKBENCH_ROOT . "zms5library/framework/_psr0"
+));
