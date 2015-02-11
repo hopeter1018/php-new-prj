@@ -6,7 +6,7 @@ require(['../main'], function() {
             }])
             .config(function ($routeProvider) {
                 $routeProvider.when('/index', {
-                    template: 'index',
+                    templateUrl: 'index',
                     controller: 'index'
                 }).otherwise({
                     redirectTo: '/index'

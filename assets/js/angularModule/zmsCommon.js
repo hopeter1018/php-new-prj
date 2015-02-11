@@ -1,4 +1,4 @@
-angular.module('zms.common', [])
+angular.module('hks.common', [])
 .filter('htmlsave', ['$sce', function($sce){
     return function(text) {
         return $sce.trustAsHtml(text);

@@ -1,4 +1,4 @@
-angular.module('zmsForm', [])
+angular.module('hks.form', [])
 .factory('zmsForm',
     ['$http', '$location', '$q', 'zmsUrlAdapter',
     function($http, $location, $q, zmsUrlAdapter)

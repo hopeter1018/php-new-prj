@@ -1,4 +1,4 @@
-angular.module('zmsTable', [])
+angular.module('hks.table', [])
 .factory('zmsTable',
     ['$resource', '$timeout', 'ngTableParams', '$http', 'zmsUrlAdapter',
     function($resource, $timeout, ngTableParams, $http, zmsUrlAdapter)

@@ -8,10 +8,10 @@ require(['../main'], function() {
             }])
             .config(function ($routeProvider) {
                 $routeProvider.when('/list', {
-                    template: 'list',
+                    templateUrl: 'list',
                     controller: 'list'
                 }).when('/record/:recordid', {
-                    template: 'record',
+                    templateUrl: 'record',
                     controller: 'record'
                 }).otherwise({
                     redirectTo: '/list'

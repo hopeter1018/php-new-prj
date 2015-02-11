@@ -1,35 +1,8 @@
-angular.module('zmsUrlAdapter', [])
+angular.module('hks.urlAdapter', [])
 .constant('URL_PARTS', {
     "module": "m",
     "sub": "s",
     "action": "a"
-})
-.provider('zmsService', ['$http', function($http) {
-    var wcmsUrl = '';
-    this.setWcmsUrl = function(url) {
-        wcmsUrl = url;
-    };
-
-//  zmsService.doLogin(login, password);
-    this.$get = function () {
-        return {
-            'doLogin': function(login, password)
-            {
-                return $http({
-
-                });
-            },
-            'doLogout': function()
-            {
-                return $http({
-
-                });
-            }
-        };
-    };
-}])
-.config(function(zmsServiceProvider){
-    zmsServiceProvider.setWcmsUrl('wcms/');
 })
 .factory('zmsUrlAdapter',
     ['$location', 'URL_PARTS',
