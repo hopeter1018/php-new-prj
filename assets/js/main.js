@@ -27,18 +27,26 @@ require.config({
         'angular-resource': ['//ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular-resource', requireJsHelper.baseUrl + 'vendor/angular-route/angular-resource'],
         'angular-sanitize': ['//ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular-sanitize', requireJsHelper.baseUrl + 'vendor/angular-route/angular-sanitize'],
 
+        'chosen': requireJsHelper.baseUrl + 'vendor/chosen/chosen.jquery',
         'bootstrap': requireJsHelper.baseUrl + 'vendor/bootstrap/dist/js/bootstrap',
         'ngUi': requireJsHelper.baseUrl + 'vendor/angular-ui/build/angular-ui',
         'ui-bootstrap': requireJsHelper.baseUrl + 'angularModule/ui-bootstrap-tpls-0.11.0',
 
         'ng-table': requireJsHelper.baseUrl + 'vendor/ng-table/dist/ng-table',
+        'angular-file-upload': requireJsHelper.baseUrl + 'vendor/danialfarid-angular-file-upload/dist/angular-file-upload',
+        'textAngular': [requireJsHelper.baseUrl + 'downloads/textAngular-1.3.6/dist/textAngular.min'],
+        'textAngular-rangy': [requireJsHelper.baseUrl + 'downloads/textAngular-1.3.6/dist/textAngular-rangy.min'],
+        'textAngular-sanitize': [requireJsHelper.baseUrl + 'downloads/textAngular-1.3.6/dist/textAngular-sanitize.min'],
+        'ng-chosen': requireJsHelper.baseUrl + 'vendor/angular-chosen-localytics/chosen',
 
-        'hks-common': requireJsHelper.baseUrl + 'angularModule/zmsCommon',
-        'hks-form': requireJsHelper.baseUrl + 'angularModule/zmsForm',
-        'hks-table': requireJsHelper.baseUrl + 'angularModule/zmsTable',
-        'hks-urlAdapter': requireJsHelper.baseUrl + 'angularModule/zmsUrlAdapter',
-        
-        'prototypes': requireJsHelper.baseUrl + 'prototypes'
+        'hkc-common': requireJsHelper.baseUrl + 'angularModule/zmsCommon',
+        'hkc-form': requireJsHelper.baseUrl + 'angularModule/zmsForm',
+        'hkc-table': requireJsHelper.baseUrl + 'angularModule/zmsTable',
+        'hkc-urlAdapter': requireJsHelper.baseUrl + 'angularModule/zmsUrlAdapter',
+        'hkc-bs-column-menu': requireJsHelper.baseUrl + 'angularModule/hkc-bs-column-menu',
+
+        'prototypes': requireJsHelper.baseUrl + 'prototypes',
+        'inflection': requireJsHelper.baseUrl + 'downloads/inflection-js/inflection'
     },
     // angular does not support AMD out of the box, put it in a shim
     shim: {
@@ -51,26 +59,32 @@ require.config({
         'angular-sanitize': {deps: ['angular'], exports: 'ngSanitize'},
         'bootstrap': { deps: ['jquery'], exports: 'bootstrap' },
 
+        'chosen': ['jquery'],
         'ngUi': ['angular'],
         'ui-bootstrap': ['angular'],
 
         'ng-table': ['angular'],
+        'angular-file-upload': ['angular'],
+        'textAngular': ['angular'],
+        'ng-chosen': ['angular'],
 
-        'hks-common': ['angular'],
-        'hks-form': ['angular'],
-        'hks-table': ['angular'],
-        'hks-urlAdapter': ['angular']
-    },
-    urlArgs: "bust=" +  (new Date()).getTime()
+        'hkc-common': ['angular'],
+        'hkc-form': ['angular'],
+        'hkc-table': ['angular'],
+        'hkc-urlAdapter': ['angular'],
+        'hkc-bs-column-menu': ['angular']
+    }
+    // Use browser cache to handle
+    // , urlArgs: "bust=" +  (new Date()).getTime()
 });
 
 define(
-    'hks-main',
+    'hkc-main',
     [
-        'angular', 'angular-route', 'angular-resource', 'angular-cookies', 'angular-sanitize',
-        'ng-table', 'ngUi', 'ui-bootstrap', 
-        'hks-urlAdapter', 'hks-common', 'hks-form', 'hks-table',
-        'prototypes'
+        'angular', 'angular-route', 'angular-resource', 'angular-cookies', 'angular-sanitize', 'chosen',
+        'ngUi', 'ui-bootstrap', 'ng-table', 'angular-file-upload', 'textAngular-rangy', 'textAngular-sanitize', 'textAngular', 'ng-chosen',
+        'hkc-urlAdapter', 'hkc-common', 'hkc-form', 'hkc-table', 'hkc-bs-column-menu',
+        'prototypes', 'inflection'
     ],
     function(ng) {
         'use strict';
@@ -79,15 +93,23 @@ define(
                 //  Angular Provided
                 'ngResource', 'ngRoute', 'ngCookies', 'ngSanitize'
                 //  Third party
-                , 'ui', 'ngTable'
+                , 'ui', 'ngTable', 'angularFileUpload', 'textAngular', 'localytics.directives'
                 //  Tailor-made
-                , 'hks.urlAdapter'
-                , 'hks.common', 'hks.form', 'hks.table'
+                , 'hkc.urlAdapter', 'hkc.common', 'hkc.form', 'hkc.table', 'hkc.bs.column-menu'
             ])
+            .filter('status', function() {
+                return function(int) {
+                    if (int == 1) {
+                        return 'Launched';
+                    } else {
+                        return 'Waiting / Rejected';
+                    }
+                };
+            })
             .config(function($interpolateProvider){
                 $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
             })
-            .controller('bodyCtrl', ['$scope', function ($scope) {
+            .controller('bodyCtrl', ['$scope', '$location', function ($scope, $location) {
 
             }])
             .controller('mainContainerCtrl', ['$scope', function ($scope) {

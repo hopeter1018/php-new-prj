@@ -1,4 +1,4 @@
-angular.module('hks.common', [])
+angular.module('hkc.common', [])
 .filter('htmlsave', ['$sce', function($sce){
     return function(text) {
         return $sce.trustAsHtml(text);
@@ -235,4 +235,12 @@ angular.module('hks.common', [])
 ])
 // </editor-fold>
 
+.filter('console', [
+    function() {
+        return function(obj) {
+            console.log(obj);
+            return 'console';
+        };
+    }
+]);
 ;

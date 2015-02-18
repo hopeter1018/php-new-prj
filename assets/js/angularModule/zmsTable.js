@@ -1,17 +1,13 @@
-angular.module('hks.table', [])
+angular.module('hkc.table', [])
 .factory('zmsTable',
     ['$resource', '$timeout', 'ngTableParams', '$http', 'zmsUrlAdapter',
     function($resource, $timeout, ngTableParams, $http, zmsUrlAdapter)
     {
         var zmsTable = {
 // <editor-fold defaultstate="collapsed" desc="zmsTable properties">
-            restfulNames: ['list', 'add', 'edit', 'view', 'delete'],
+            restfulNames: ['listing', 'add', 'save', 'view', 'delete'],
             params: {
-                listUrl: '',
-                addUrl: '',
-                editUrl: '',
-                viewUrl: '',
-                deleteUrl: ''
+                listingUrl: '', addUrl: '', editUrl: '', viewUrl: '', deleteUrl: ''
             },
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="zmsTable init & paseAttr">
@@ -23,7 +19,7 @@ angular.module('hks.table', [])
             {
 //                console.log(location.search);
                 for (var i in this.restfulNames) {
-                    this.params[ this.restfulNames[i] + 'Url' ] = zmsUrlAdapter.urlWithMode($attrs.restfulCrud + this.restfulNames[i].ucfirst());
+                    this.params[ this.restfulNames[i] + 'Url' ] = zmsUrlAdapter.urlWithMode(this.restfulNames[i]);
                 }
                 $scope.searchParams = {};
             },
@@ -32,17 +28,17 @@ angular.module('hks.table', [])
             loadTable: function ($scope, $element, $attrs, delayedValues)
             {
                 if (typeof delayedValues === 'undefined') {
-                    var Api = $resource(this.params.listUrl);
+                    var Api = $resource(this.params.listingUrl);
                 } else {
-                    var Api = $resource(this.params.listUrl + '&' + $.param(delayedValues));
+                    var Api = $resource(this.params.listingUrl + '&' + $.param(delayedValues));
                 }
-                $scope.tableParams = new ngTableParams(
+                $scope[$attrs.restfulCrud + 'NgTable'] = new ngTableParams(
                     angular.extend(
                         {"page": 1, "count": 20},
                         JSON.parse($attrs.params)
                     ),
                     {
-                        total: 0, // length of data
+//                        total: 0, // length of data
                         getData: function($defer, params) {
                             var newParam = {}, filter = {}, filterType = {};
                             angular.copy(params, newParam);
@@ -65,10 +61,10 @@ angular.module('hks.table', [])
                             // ajax request to api
                             Api.get(newParam.url(), function(data) {
                                 $timeout(function() {
-                                    $scope.total = data.data.total;
-                                    $scope.csrf = data.csrf;
-
-                                    $scope.loaded = true; 
+                                    $scope[$attrs.restfulCrud + 'NgTableRaw'] = {
+                                        data: data.data,
+                                        loaded: true,
+                                    };
 
                                     // update table params
                                     params.total(data.data.total);
@@ -81,14 +77,14 @@ angular.module('hks.table', [])
             },
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="zmsTable.delete">
-            "delete": function($scope, recordId)
+            "delete": function($scope, recordId, $attrs)
             {
                 $http({
                     method: "post",
                     url: zmsTable.params.deleteUrl,
                     data: {"recordId": recordId}
                 }).success(function(data, status, headers, config) {
-                    $scope.tableParams.reload();
+                    $scope[$attrs.restfulCrud + 'NgTable'].tableParams.reload();
                 }).error(function(data, status, headers, config) {
                 });
             }
@@ -97,6 +93,17 @@ angular.module('hks.table', [])
         return zmsTable;
     }]
 )
+.directive('hksTableBtn', [
+    function(){
+        return {
+            restrict: 'CA',
+            template: '<a></a>',
+            link: function($scope, $element, $attrs)
+            {
+                
+            }
+        };
+    }])
 .directive('zmsTable', [
     'zmsTable',
     function(zmsTable) {
@@ -130,32 +137,6 @@ angular.module('hks.table', [])
                     zmsTable.init($scope, $element, $attrs);
                     zmsTable.loadTable($scope, $element, $attrs);
                 }
-
-// <editor-fold defaultstate="collapsed" desc="Shortcuts">
-
-                $scope.table = {
-                    "search": function()
-                    {
-                        $scope.tableParams.reload();
-                    },
-                    "reload": function()
-                    {
-                        $scope.tableParams.reload();
-                    },
-                    "sorting": function(option)
-                    {
-                        $scope.tableParams.sorting(option);
-                    },
-                    /**
-                     * @param int recordId
-                     */
-                    "delete": function(recordId)
-                    {
-                        zmsTable.delete($scope, recordId);
-                    }
-                };
-
-// </editor-fold>
             }
         };
     }]

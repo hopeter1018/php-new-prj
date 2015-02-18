@@ -38,7 +38,7 @@ if (PHP_SAPI !== 'cli' and class_exists('Phar') and is_file(APP_ROOT . 'phVendor
     $composerAutoloader = require_once APP_WCMS_ROOT . "vendor/autoload.php";
 }
 
-list($conn, $config, $entityManager) = \Hopeter1018\DoctrineExtension\Connection::register();
+list($conn, $config, $entityManager) = Hopeter1018\DoctrineExtension\Connection::register();
 
 Hopeter1018\DeveloperTool\CliProcess::start();
 

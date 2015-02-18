@@ -1,4 +1,4 @@
-angular.module('hks.urlAdapter', [])
+angular.module('hkc.urlAdapter', [])
 .constant('URL_PARTS', {
     "module": "m",
     "sub": "s",
@@ -17,14 +17,7 @@ angular.module('hks.urlAdapter', [])
                 return location.pathname
                     + location.search
                     + ((location.search === '') ? '?' : '&')
-                    + 'mode=' + mode;
-            },
-            "urlM": function(mode)
-            {
-                return location.pathname
-                    + location.search
-                    + ((location.search === '') ? '?' : '&')
-                    + 'm=' + mode;
+                    + 'a=' + mode;
             },
             "getRoute": function ($route)
             {

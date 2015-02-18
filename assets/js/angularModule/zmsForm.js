@@ -1,13 +1,13 @@
-angular.module('hks.form', [])
+angular.module('hkc.form', [])
 .factory('zmsForm',
     ['$http', '$location', '$q', 'zmsUrlAdapter',
     function($http, $location, $q, zmsUrlAdapter)
     {
         var zmsForm = {
 // <editor-fold defaultstate="collapsed" desc="zmsForm properties">
-            restfulNames: ['edit', 'view', 'launch', 'reject', 'requestApproval'],
+            restfulNames: ['save', 'view', 'launch', 'reject', 'requestApproval'],
             params: {
-                editUrl: '',
+                saveUrl: '',
                 viewUrl: '',
                 launchUrl: '',
                 rejectUrl: '',
@@ -27,9 +27,9 @@ angular.module('hks.form', [])
             parseAttr: function($scope, $attrs)
             {
                 for (var i in this.restfulNames) {
-                    this.params[ this.restfulNames[i] + 'Url' ] = zmsUrlAdapter.urlWithMode($attrs.restfulCrud + this.restfulNames[i].ucfirst());
+                    this.params[ this.restfulNames[i] + 'Url' ] = zmsUrlAdapter.urlWithMode(this.restfulNames[i]);
                 }
-                this.params[ 'uploadUrl' ] = zmsUrlAdapter.urlM($attrs.restfulCrud + 'Upload');
+                this.params[ 'uploadUrl' ] = zmsUrlAdapter.urlWithMode('upload');
             },
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="zmsForm.get">
@@ -84,7 +84,7 @@ angular.module('hks.form', [])
 
                 $http({
                     method: "post",
-                    url: zmsForm.params.editUrl,
+                    url: zmsForm.params.saveUrl,
                     data: {
                         "recordId": recordid,
                         "csrf": $scope.csrf,

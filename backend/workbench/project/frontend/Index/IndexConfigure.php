@@ -6,9 +6,9 @@
  * and open the template in the editor.
  */
 
-namespace Zms5\Manager\MyProfile;
+namespace Project\Frontend\Index;
 
-use Zms5Library\Framework\ManagerModule\ManagerConfigure;
+use Hopeter1018\Framework\ManagerModule\ManagerConfigure;
 
 /**
  * Description of IndexConfigure

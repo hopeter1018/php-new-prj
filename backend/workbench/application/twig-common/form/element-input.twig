@@ -4,8 +4,11 @@
 
 {% if formEle['type'] == 'textarea' %}
         <textarea class="form-control" {{ attrStr | raw }}></textarea>
+{% elseif formEle['type'] == 'textangular' %}
+        <div style="min-height: 300px;" text-angular {{ attrStr | raw }} ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
 {% elseif formEle['type'] == 'select' %}
         <select class="form-control" {{ attrStr | raw }}>
+            <option value=""></option>
     {% for opts in formEle['options'] %}
             <option value="{{ opts[ formEle['optionValue'] ?: "value" ] }}">{{ opts[ formEle['optionCaption'] ?: "caption" ] }}</option>
     {% endfor %}

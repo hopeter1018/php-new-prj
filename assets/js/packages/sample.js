@@ -1,5 +1,5 @@
 require(['../main'], function() {
-    require(['hks-main', 'angular'], function(app, ng) {
+    require(['hkc-main', 'angular'], function(app, ng) {
         'use strict';
         app
             .controller('list', ['$scope', function ($scope) {
@@ -8,10 +8,10 @@ require(['../main'], function() {
             }])
             .config(function ($routeProvider) {
                 $routeProvider.when('/list', {
-                    templateUrl: 'list',
+                    template: 'list',
                     controller: 'list'
                 }).when('/record/:recordid', {
-                    templateUrl: 'record',
+                    template: 'record',
                     controller: 'record'
                 }).otherwise({
                     redirectTo: '/list'

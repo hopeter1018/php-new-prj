@@ -41,6 +41,8 @@
                 {% endif %}
             {% endfor %}
             {% set validatorAttr = vals | join(' ') %}
+
+            {% set attrStr = '' %}
             {% for key, val in subFormEle['attr'] %}
                 {%   set attrStr = attrStr ~ ' ' ~ key ~ '="' ~ val ~ '"' %}
             {% endfor %}
@@ -65,6 +67,8 @@
                 {% endif %}
             {% endfor %}
             {% set validatorAttr = vals | join(' ') %}
+
+            {% set attrStr = '' %}
             {% for key, val in formEle['attr'] %}
                 {%   set attrStr = attrStr ~ ' ' ~ key ~ '="' ~ val ~ '"' %}
             {% endfor %}

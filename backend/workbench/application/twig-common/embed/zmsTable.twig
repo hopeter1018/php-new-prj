@@ -35,7 +35,7 @@ parameters:
                             {% block searchBtn %}
                                 <div class="{{ bs.fg }}">
                                     <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="submit" class="{{ bs.btn.d }}" ng-click="table.search()">Search</button>
+                                        <button type="submit" class="{{ bs.btn.d }}" ng-click="{{ crud ?: 'record' }}NgTable.reload()">Search</button>
                                     </div>
                                 </div>
                             {% endblock %}
@@ -52,11 +52,11 @@ parameters:
             {% block belowSearch %}
                 <a href="#record/0" class="{{ bs.btn.d }}">Add</a>
             {% endblock %}
-            Total <span class="badge">{[{ total }]}</span> record(s) found.
+            Total <span class="badge">{[{ {{ crud ?: 'record' }}NgTable.total() }]}</span> record(s) found.
 
-            <div loading-container="tableParams.settings().$loading">
-                <div class="jumbotron" ng-show="! loaded"><h2>Loading ...</h2></div>
-                <table ng-table="tableParams" ng-show="loaded" show-filter="false" class="table table-hover table-condensed">
+            <div loading-container="{{ crud ?: 'record' }}NgTable.settings().$loading">
+                <div class="jumbotron" ng-show="! {{ crud ?: 'record' }}NgTableRaw.loaded"><h2>Loading ...</h2></div>
+                <table ng-table="{{ crud ?: 'record' }}NgTable" ng-show="{{ crud ?: 'record' }}NgTableRaw.loaded" show-filter="false" class="table table-hover table-condensed">
                     <tbody>
                         {% block tr %}Tr goes here{% endblock %}
                     </tbody>
