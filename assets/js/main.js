@@ -37,12 +37,13 @@ require.config({
         'textAngular': [requireJsHelper.baseUrl + 'downloads/textAngular-1.3.6/dist/textAngular.min'],
         'textAngular-rangy': [requireJsHelper.baseUrl + 'downloads/textAngular-1.3.6/dist/textAngular-rangy.min'],
         'textAngular-sanitize': [requireJsHelper.baseUrl + 'downloads/textAngular-1.3.6/dist/textAngular-sanitize.min'],
+        'angular-validation-match': requireJsHelper.baseUrl + 'vendor/angular-validation-match/dist/angular-input-match.min',
         'ng-chosen': requireJsHelper.baseUrl + 'vendor/angular-chosen-localytics/chosen',
 
         'hkc-common': requireJsHelper.baseUrl + 'angularModule/zmsCommon',
         'hkc-form': requireJsHelper.baseUrl + 'angularModule/zmsForm',
         'hkc-table': requireJsHelper.baseUrl + 'angularModule/zmsTable',
-        'hkc-urlAdapter': requireJsHelper.baseUrl + 'angularModule/zmsUrlAdapter',
+        'hkc-url-adapter': requireJsHelper.baseUrl + 'angularModule/hkc-url-adapter',
         'hkc-bs-column-menu': requireJsHelper.baseUrl + 'angularModule/hkc-bs-column-menu',
 
         'prototypes': requireJsHelper.baseUrl + 'prototypes',
@@ -65,13 +66,14 @@ require.config({
 
         'ng-table': ['angular'],
         'angular-file-upload': ['angular'],
+        'angular-validation-match': ['angular'],
         'textAngular': ['angular'],
         'ng-chosen': ['angular'],
 
         'hkc-common': ['angular'],
         'hkc-form': ['angular'],
         'hkc-table': ['angular'],
-        'hkc-urlAdapter': ['angular'],
+        'hkc-url-adapter': ['angular'],
         'hkc-bs-column-menu': ['angular']
     }
     // Use browser cache to handle
@@ -82,8 +84,9 @@ define(
     'hkc-main',
     [
         'angular', 'angular-route', 'angular-resource', 'angular-cookies', 'angular-sanitize', 'chosen',
-        'ngUi', 'ui-bootstrap', 'ng-table', 'angular-file-upload', 'textAngular-rangy', 'textAngular-sanitize', 'textAngular', 'ng-chosen',
-        'hkc-urlAdapter', 'hkc-common', 'hkc-form', 'hkc-table', 'hkc-bs-column-menu',
+        'ngUi', 'ui-bootstrap', 'ng-table', 'angular-file-upload', 'angular-validation-match',
+        'textAngular-rangy', 'textAngular-sanitize', 'textAngular', 'ng-chosen',
+        'hkc-url-adapter', 'hkc-common', 'hkc-form', 'hkc-table', 'hkc-bs-column-menu',
         'prototypes', 'inflection'
     ],
     function(ng) {
@@ -94,16 +97,20 @@ define(
                 'ngResource', 'ngRoute', 'ngCookies', 'ngSanitize'
                 //  Third party
                 , 'ui', 'ngTable', 'angularFileUpload', 'textAngular', 'localytics.directives'
+                , 'validation.match'
+
                 //  Tailor-made
                 , 'hkc.urlAdapter', 'hkc.common', 'hkc.form', 'hkc.table', 'hkc.bs.column-menu'
             ])
             .filter('status', function() {
+                var status = {
+                    1: "New (by Frontend)",
+                    2: "New (by Backend)",
+                    3: "Approved",
+                    4: "Rejected"
+                };
                 return function(int) {
-                    if (int == 1) {
-                        return 'Launched';
-                    } else {
-                        return 'Waiting / Rejected';
-                    }
+                    return status[int];
                 };
             })
             .config(function($interpolateProvider){

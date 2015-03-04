@@ -1,7 +1,7 @@
 angular.module('hkc.form', [])
 .factory('zmsForm',
-    ['$http', '$location', '$q', 'zmsUrlAdapter',
-    function($http, $location, $q, zmsUrlAdapter)
+    ['$http', '$location', '$q', 'hkcUrlAdapter',
+    function($http, $location, $q, hkcUrlAdapter)
     {
         var zmsForm = {
 // <editor-fold defaultstate="collapsed" desc="zmsForm properties">
@@ -27,9 +27,9 @@ angular.module('hkc.form', [])
             parseAttr: function($scope, $attrs)
             {
                 for (var i in this.restfulNames) {
-                    this.params[ this.restfulNames[i] + 'Url' ] = zmsUrlAdapter.urlWithMode(this.restfulNames[i]);
+                    this.params[ this.restfulNames[i] + 'Url' ] = hkcUrlAdapter.urlWithMode(this.restfulNames[i]);
                 }
-                this.params[ 'uploadUrl' ] = zmsUrlAdapter.urlWithMode('upload');
+                this.params[ 'uploadUrl' ] = hkcUrlAdapter.urlWithMode('upload');
             },
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="zmsForm.get">
@@ -105,11 +105,14 @@ angular.module('hkc.form', [])
                     }
 
                     $scope.csrf = data.csrf;
+                    var redirectToList = true;
                     if (typeof $scope.onSaveData === 'function') {
-                        $scope.onSaveData(data.data);
+                        redirectToList = $scope.onSaveData(data, status, headers, config);
                     }
 
-                    $location.path("/list");
+                    if (redirectToList) {
+                        $location.path("/list");
+                    }
                 }).error(function(data, status, headers, config) {
                     $scope.serverMessage = headers()['zms-form-error'];
                     angular.extend($scope.form, data.form);
@@ -184,8 +187,8 @@ angular.module('hkc.form', [])
 // <editor-fold defaultstate="collapsed" desc="ng directive: zms-form">
 
 .directive('zmsForm', [
-    'zmsForm', '$http', '$upload', '$routeParams',
-    function(zmsForm, $http, $upload, $routeParams) {
+    'zmsForm', '$http', '$upload', '$routeParams', 'hkc.urlAdapter',
+    function(zmsForm, $http, $upload, $routeParams, hkcUrlAdapter) {
         return {
             restrict: 'A',
 //            require: 'restfulCrud',
@@ -234,28 +237,101 @@ angular.module('hkc.form', [])
 )
 
 // </editor-fold>
+// <editor-fold defaultstate="collapsed" desc="ng directive: zms-input-file">
 
 .directive('zmsInputFile', [
     function() {
         return {
             restrict: 'A',
             replace: true,
+            require: 'ngModel',
             scope: true,
             template: '<div>\
 <input class="form-control" name="{[{ zmsInputFile }]}" type="file" ng-file-select="addUpload($files, $event, zmsInputFile)" />\
 <div ng-repeat="file in dataFileUpload[ zmsInputFile ]">{[{ file.file.name }]}</div>\
 <div ng-show="fileData[zmsInputFile].length === 1 && fileData[zmsInputFile][0] !== \'\'"><a href="{[{ fileData[zmsInputFile][0] }]}?{[{ dummy }]}" target="_blank">Preview</a></div>\
 </div>',
-            link: function($scope, $element, $attrs)
+            link: function($scope, $element, $attrs, ngModel)
             {
                 $scope.dummy = new Date();
-                $scope.zmsInputFile = $attrs.zmsInputFile;
+                $scope.zmsInputFile = $attrs.data + '.' + $attrs.zmsInputFile;
+
+                $scope.fileData = null;
                 $scope.$parent.$watch($attrs.data, function(newValue) {
                     $scope.fileData = newValue;
+                });
+
+                $scope.isValid = function(value) {
+                    var isValid = (
+                        (typeof $scope.fileData !== 'undefined' && ! angular.equals({}, $scope.fileData)
+                            && typeof $scope.fileData[ $attrs.zmsInputFile ] !== 'undefined' && null !== $scope.fileData[ $attrs.zmsInputFile ])
+                        || (typeof value !== 'undefined' && '' !== value && null !== value)
+                    );
+//                    console.log('isValid', isValid, $attrs.zmsInputFile, $scope.fileData, $scope.fileData[ $attrs.zmsInputFile ], value);
+                    return isValid;
+                };
+
+                //For DOM -> model validation
+                ngModel.$parsers.unshift(function(value) {
+                    var valid = $scope.isValid(value);
+                    ngModel.$setValidity('required', valid);
+                    return valid ? value : undefined;
+                });
+
+                //For model -> DOM validation
+                ngModel.$formatters.unshift(function(value) {
+                    ngModel.$setValidity('required', $scope.isValid(value));
+                    return value;
                 });
             }
         };
     }
 ])
 
+//  </editor-fold>
+
+.directive('hkcBtn', ['hkcUrlAdapter', '$parse',
+    function(hkcUrlAdapter, $parse) {
+        return {
+            restrict: 'A',
+            transclude: true,
+            replace: true,
+            scope: true,
+            template: function(element, attrs) {
+                var cssClass = element[0].getAttribute('class');
+                var html = jQuery(element[0])
+                        .attr('class', (cssClass === null ? '' : cssClass) + '{[{ bClass }]}')
+                        .attr('data-ng-transclude', '')
+                        .attr('ng-click', 'doHttp($event)')
+                        .removeAttr('hkc-btn')
+                        .removeAttr('ng-show')
+                        .removeAttr('a')
+                        .removeAttr('c')
+                        .removeAttr('n')
+                        .removeAttr('btn-class')
+                        .clone().wrap('<p>').parent().html();
+                return html;
+            },
+            link: function($scope, $element, $attrs)
+            {
+                var record = $parse($attrs.hkcBtn)($scope);
+
+                if ($attrs.btnClass === 'p') { $scope.bClass = 'btn btn-sm btn-primary'; }
+                else if ($attrs.btnClass === 's') { $scope.bClass = 'btn btn-sm btn-success'; }
+                else if ($attrs.btnClass === 'i') { $scope.bClass = 'btn btn-sm btn-info'; }
+                else if ($attrs.btnClass === 'w') { $scope.bClass = 'btn btn-sm btn-warning'; }
+                else if ($attrs.btnClass === 'd') { $scope.bClass = 'btn btn-sm btn-danger'; }
+                else { $scope.bClass = 'btn btn-sm btn-default'; }
+
+                $scope.doHttp = function($event)
+                {
+                    hkcUrlAdapter.acnHttp({"record": record, "csrf": $scope.csrf}, $attrs.a, $attrs.c, $attrs.n)
+                        .then(function(data, status, headers, config) {
+                            $scope.csrf = data.csrf;
+                            angular.element($event.target).scope().$parent.$parent['recordNgTable'].reload();
+                        });
+                };
+            }
+        };
+}])
 ;

@@ -41,11 +41,10 @@
             {% endif %}
             <div class="{{ bs.fg }}">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <div class="zmsHidden">{[{ form.$error }]}</div>
+                    <div class="display-none">{[{ form.$error }]}</div>
                     <div class="alert alert-info" ng-show="formDataLoaded && (form.$invalid || serverMessage != '')">
                         <p ng-show="serverMessage != ''"><span ng-bind-html="serverMessage"></span></p>
-                        {% block messageArea %}
-                        {% endblock %}
+                        {% block messageArea %}{% endblock %}
                         {% if formElements is iterable %}
                             {% for formEle in formElements %}
                                 {% include 'form/element-error.twig' with formEle %}

@@ -21,6 +21,7 @@
         "angular-ui-utils": null,
         "angular-filter": null,
         "danialfarid-angular-file-upload": null,
+        "angular-validation-match": null,
         "ng-table": null,
         "ng-phpdebugbar": "latest"
     }

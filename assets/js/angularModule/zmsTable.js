@@ -1,7 +1,7 @@
 angular.module('hkc.table', [])
 .factory('zmsTable',
-    ['$resource', '$timeout', 'ngTableParams', '$http', 'zmsUrlAdapter',
-    function($resource, $timeout, ngTableParams, $http, zmsUrlAdapter)
+    ['$resource', '$timeout', 'ngTableParams', '$http', 'hkcUrlAdapter',
+    function($resource, $timeout, ngTableParams, $http, hkcUrlAdapter)
     {
         var zmsTable = {
 // <editor-fold defaultstate="collapsed" desc="zmsTable properties">
@@ -19,7 +19,7 @@ angular.module('hkc.table', [])
             {
 //                console.log(location.search);
                 for (var i in this.restfulNames) {
-                    this.params[ this.restfulNames[i] + 'Url' ] = zmsUrlAdapter.urlWithMode(this.restfulNames[i]);
+                    this.params[ this.restfulNames[i] + 'Url' ] = hkcUrlAdapter.urlWithMode(this.restfulNames[i]);
                 }
                 $scope.searchParams = {};
             },

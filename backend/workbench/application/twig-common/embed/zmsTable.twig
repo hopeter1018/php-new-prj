@@ -35,7 +35,7 @@ parameters:
                             {% block searchBtn %}
                                 <div class="{{ bs.fg }}">
                                     <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="submit" class="{{ bs.btn.d }}" ng-click="{{ crud ?: 'record' }}NgTable.reload()">Search</button>
+                                        <button type="submit" class="{{ bs.btn._ }}" ng-click="{{ crud ?: 'record' }}NgTable.reload()">Search</button>
                                     </div>
                                 </div>
                             {% endblock %}
@@ -45,12 +45,12 @@ parameters:
                 </div>
             {% endif %}
             {#
-                    <button ng-click="table.reload()" class="{{ bs.btn.d }}">Reload</button>
-                    <button ng-click="table.sorting({})" class="{{ bs.btn.d }}">Clear sorting</button>
-                    <button ng-click="recordInfo.add()" class="{{ bs.btn.d }}">Add New</button>
+                    <button ng-click="table.reload()" class="{{ bs.btn._ }}">Reload</button>
+                    <button ng-click="table.sorting({})" class="{{ bs.btn._ }}">Clear sorting</button>
+                    <button ng-click="recordInfo.add()" class="{{ bs.btn._ }}">Add New</button>
             #}
             {% block belowSearch %}
-                <a href="#record/0" class="{{ bs.btn.d }}">Add</a>
+                <a href="#record/0" class="{{ bs.btn._ }}">Add</a>
             {% endblock %}
             Total <span class="badge">{[{ {{ crud ?: 'record' }}NgTable.total() }]}</span> record(s) found.
 

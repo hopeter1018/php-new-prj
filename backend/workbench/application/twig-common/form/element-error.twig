@@ -1,5 +1,10 @@
 
 {% set caption = formEle['caption'] ?: (formEle['name'] | humanize) %}
+{% set messages = {
+    'minlength': '%caption% must had more than %valValue% characters.',
+    'maxlength': '%caption% must not had more than %valValue% characters.',
+    'required': 'Please enter %caption%.',
+} %}
 
 {% if formEle['type'] == 'number' %}
     {% if formEle['repeat'] is not null %}
@@ -18,6 +23,7 @@
         <p ng-show="form['data.record.{{ formEle['name'] }}'].$error.email">{{ caption }} is not a valid email</p>
     {% endif %}
 {% else %}
+    
 {% endif %}
 
 {% for valKey, validator in formEle['validators'] %}
@@ -35,4 +41,19 @@
     {% else %}
         <p ng-show="form['data.record.{{ formEle['name'] }}'].$error.{{ temp[0] | camelize }}">{{ message | replace({'%caption%': caption}) }}</p>
     {% endif %}
+{% endfor %}
+
+{% for valKey, valValue in formEle['attr'] %}
+    {%  if (valKey == 'required' or formEle['attr'][ valKey ~ '-message'] is defined or messages[valKey] is defined) %}
+        {%  set message = formEle['attr'][ valKey ~ '-message'] ?: (messages[valKey] ?: '%caption% is not valid.') %}
+        {%  set temp = valKey | split('|') %}
+
+        {% if formEle['repeat'] is not null %}
+            {% for index, each in formEle['repeat'] %}
+                <p ng-show="form['data.info[{{index}}].{{ formEle['name'] }}'].$error.{{ temp[0] | camelize }}">{{ message | replace({'%valValue%': valValue, '%caption%': caption ~ " (" ~ each[ formEle['repeat_caption'] ] | upper ~ ")"}) }}</p>
+            {% endfor %}
+        {% else %}
+            <p ng-show="form['data.record.{{ formEle['name'] }}'].$error.{{ temp[0] | camelize }}">{{ message | replace({'%valValue%': valValue, '%caption%': caption}) }}</p>
+        {% endif %}
+    {%  endif %}
 {% endfor %}

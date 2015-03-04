@@ -34,7 +34,7 @@ class IndexConfigure extends ManagerConfigure
      */
     public static function getDefaultModuleName()
     {
-        return 'my-profile';
+        return 'index';
     }
 
     /**
